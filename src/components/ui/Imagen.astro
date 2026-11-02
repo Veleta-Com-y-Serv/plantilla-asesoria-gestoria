@@ -1,8 +1,21 @@
 ---
 // Imagen con carga diferida por defecto. `prioridad` para la del hero (se carga al momento).
+import { existsSync } from 'node:fs';
+import { join, basename, extname } from 'node:path';
+
 interface Props { src?: string; alt?: string; ancho?: number; alto?: number; class?: string; prioridad?: boolean }
-const { src, alt = '', ancho = 800, alto = 600, class: clase = '', prioridad = false } = Astro.props;
+const { src: original, alt = '', ancho = 800, alto = 600, class: clase = '', prioridad = false } = Astro.props;
 // `alt` vacío = foto decorativa (también aria-hidden). Las de contenido llevan su alt (src/lib/seo.ts: altHero, altFicha…).
+
+// Respaldo: si una foto de public/ aún no existe (p. ej. /fotos/hero.jpg antes de generarlas),
+// se usa el SVG de public/placeholders/ con el mismo nombre, o el genérico. Así nunca se ve el alt suelto.
+const publico = join(process.cwd(), 'public');
+const existe = (ruta: string) => ruta.startsWith('/') && existsSync(join(publico, ruta));
+const propio = original ? `/placeholders/${basename(original, extname(original))}.svg` : '';
+const respaldo = propio && existe(propio) ? propio : '/placeholders/hero.svg';
+const local = !!original && original.startsWith('/') && !original.startsWith('//');
+const src = local && !existe(original!) ? respaldo : original;
+const alFallar = src !== respaldo ? `this.onerror=null;this.src='${respaldo}'` : undefined;
 ---
 
 {
@@ -17,6 +30,7 @@ const { src, alt = '', ancho = 800, alto = 600, class: clase = '', prioridad = f
       loading={prioridad ? 'eager' : 'lazy'}
       decoding="async"
       fetchpriority={prioridad ? 'high' : undefined}
+      onerror={alFallar}
     />
   )
 }
