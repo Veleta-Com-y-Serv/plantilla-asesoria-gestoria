@@ -1,0 +1,76 @@
+---
+// Banda «Primera consulta gratis»: fila 50/50 a sangre. A la izquierda, arena plena con el titular enorme, el
+// texto, las formas de hacer la consulta (`items`: titulo, texto, icono) y dos botones; a la derecha, la foto
+// `imagen` toca el borde derecho de la ventana, con la esquina grande hacia el texto. Sin foto, la banda arena
+// ocupa todo el ancho con las formas en columnas.
+import { seccion } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const formas = s ? s.items.filter((it) => it && it.titulo) : [];
+---
+
+{
+  s && (s.titulo || s.texto || s.cta?.url) && (
+    <section id={Astro.props.id} class:list={['consulta', { 'con-foto': !!s.imagen }]}>
+      <div class="consulta-texto">
+        {s.antetitulo && <p class="antetitulo">{s.antetitulo}</p>}
+        {s.titulo && <h2 class="consulta-titulo">{s.titulo}</h2>}
+        {s.texto && <p class="consulta-parrafo">{s.texto}</p>}
+        {formas.length > 0 && (
+          <ul class="formas">
+            {formas.map((f) => (
+              <li class="forma">
+                <span class="forma-icono"><Icono nombre={f.icono} tam={22} /></span>
+                <div>
+                  <p class="forma-titulo">{f.titulo}</p>
+                  {f.texto && <p class="forma-texto">{f.texto}</p>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+        {(s.cta?.url || s.cta_secundario?.url) && (
+          <div class="consulta-botones">
+            {s.cta?.url && <a class="btn btn--verde" href={s.cta.url}>{s.cta.texto}</a>}
+            {s.cta_secundario?.url && (
+              <a class="btn-sec" href={s.cta_secundario.url} rel={s.cta_secundario.url.startsWith('http') ? 'noopener' : undefined} target={s.cta_secundario.url.startsWith('http') ? '_blank' : undefined}>{s.cta_secundario.texto}</a>
+            )}
+          </div>
+        )}
+      </div>
+      {s.imagen && (
+        <div class="consulta-foto foto-curva--izq">
+          <Imagen src={s.imagen} alt={altSeccion(s)} ancho={1200} alto={900} />
+        </div>
+      )}
+    </section>
+  )
+}
+
+<style>
+  .consulta { display: grid; background: var(--arena); color: var(--verde-hondo); }
+  .consulta-texto { width: 100%; max-width: var(--ancho); margin-inline: auto; padding: var(--ritmo) 1rem; }
+  @media (min-width: 768px) { .consulta-texto { padding: var(--ritmo-md) 2rem; } }
+  .consulta .antetitulo { color: var(--tinta-verde); }
+  .consulta-titulo { margin-top: 1rem; font-size: clamp(2.8rem, 8vw, 6.5rem); line-height: .95; letter-spacing: -0.05em; color: var(--verde-hondo); max-width: 11ch; }
+  .consulta-parrafo { margin-top: 1.5rem; max-width: 36rem; font-size: clamp(1.05rem, 1.5vw, 1.25rem); font-weight: 500; }
+  .formas { display: grid; gap: 1rem; margin-top: 2.5rem; }
+  @media (min-width: 640px) { .formas { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .forma { display: flex; gap: .85rem; padding-top: 1rem; border-top: 3px solid var(--verde-hondo); }
+  @media (min-width: 640px) { .forma { flex-direction: column; } }
+  .forma-icono { display: grid; place-items: center; flex: none; width: 2.75rem; height: 2.75rem; border-radius: 999px; background: var(--verde-hondo); color: var(--arena); }
+  .forma-titulo { font-family: var(--fuente-titulos); font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; }
+  .forma-texto { margin-top: .2rem; font-size: .95rem; opacity: .85; }
+  .consulta-botones { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2.5rem; }
+  @media (max-width: 479px) { .consulta-botones a { width: 100%; } }
+  .consulta-foto { position: relative; min-height: 20rem; margin-left: 1rem; }
+  .consulta-foto :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  @media (min-width: 1024px) {
+    .consulta.con-foto { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .consulta.con-foto .consulta-texto { max-width: none; margin: 0; padding-inline: max(3rem, calc((100vw - var(--ancho)) / 2 + 3rem)) clamp(3rem, 5vw, 6rem); }
+    .consulta-foto { margin: 3rem 0 0 0; min-height: 0; }
+  }
+</style>

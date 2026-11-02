@@ -1,0 +1,83 @@
+---
+// Planes de cuota: banda arena plena a todo el ancho. Titular y, debajo, los planes en columnas (1/2/4) separadas
+// por reglas verticales, como las columnas de un libro de cuentas: nombre, precio enorme en cifras tabulares,
+// periodo y lo que incluye (cadena con «;»). El plan `destacado` va en verde pleno con la etiqueta «El más
+// elegido». Sin precio no hay precio. `nota` opcional al pie. Lista propia `planes` (nombre, precio, periodo,
+// incluye, destacado).
+import { seccion, partes } from '../../data/site';
+import Seccion from '../ui/Seccion.astro';
+import Titular from '../ui/Titular.astro';
+import Icono from '../ui/Icono.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const planes = s ? s.planes.filter((p) => p && p.nombre) : [];
+const nota = s && s.nota ? String(s.nota) : '';
+const ctaPlan = s?.cta?.url ? s.cta : { texto: 'Lo quiero', url: '/#contacto' };
+---
+
+{
+  s && (planes.length > 0 || s.texto) && (
+    <Seccion id={Astro.props.id} class="banda--arena">
+      <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+      {planes.length > 0 && (
+        <ul class="planes" style={`--n:${Math.min(planes.length, 4)}`}>
+          {planes.map((p) => (
+            <li class:list={['plan', { 'plan--destacado': p.destacado === true }]}>
+              {p.destacado === true && <p class="plan-sello">El más elegido</p>}
+              <h3 class="plan-nombre">{p.nombre}</h3>
+              {p.precio && (
+                <p class="plan-precio">
+                  {/^desde\s+/i.test(p.precio) ? (
+                    <>
+                      <span class="plan-desde">desde</span>
+                      <span class="plan-importe">{p.precio.replace(/^desde\s+/i, '')}</span>
+                    </>
+                  ) : (
+                    <span class="plan-importe">{p.precio}</span>
+                  )}
+                  {p.periodo && <span class="plan-periodo">{p.periodo}</span>}
+                </p>
+              )}
+              {partes(p.incluye).length > 0 && (
+                <ul class="plan-incluye">
+                  {partes(p.incluye).map((x) => (
+                    <li><Icono nombre="check" tam={18} class="plan-check" /><span>{x}</span></li>
+                  ))}
+                </ul>
+              )}
+              <a class:list={['plan-boton', p.destacado === true ? 'btn' : 'btn btn--verde']} href={ctaPlan.url}>{ctaPlan.texto}</a>
+            </li>
+          ))}
+        </ul>
+      )}
+      {nota && <p class="planes-nota">{nota}</p>}
+    </Seccion>
+  )
+}
+
+<style>
+  .planes { display: grid; border-top: 2px solid var(--tinta-verde); }
+  @media (min-width: 768px) { .planes { grid-template-columns: repeat(min(var(--n), 2), minmax(0, 1fr)); } }
+  @media (min-width: 1200px) { .planes { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); } }
+  .plan { position: relative; display: flex; flex-direction: column; gap: 1.25rem; padding: 2.25rem 0 2.5rem; border-bottom: 2px solid color-mix(in srgb, var(--tinta-verde) 35%, transparent); color: var(--verde-hondo); }
+  @media (min-width: 768px) {
+    .plan { padding: 2.5rem 2rem 3rem; border-bottom: 0; border-left: 2px solid color-mix(in srgb, var(--tinta-verde) 35%, transparent); }
+    .plan:first-child { border-left: 0; padding-left: 0; }
+  }
+  .plan--destacado { padding-inline: 1.5rem; margin-inline: -1rem; background: var(--verde); color: var(--sobre-verde); border-radius: 0 0 var(--radio) var(--radio); border-bottom: 0; }
+  @media (min-width: 768px) { .plan--destacado, .plan--destacado:first-child { margin: 0; padding-inline: 2rem; border-left: 0; } .plan--destacado + .plan { border-left: 0; } }
+  .plan-sello { align-self: flex-start; padding: .35rem .85rem; border-radius: 999px; background: var(--arena); color: var(--verde-hondo); font-family: var(--fuente-titulos); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  .plan-nombre { font-size: clamp(1.5rem, 2.4vw, 2rem); }
+  .plan--destacado .plan-nombre { color: #fff; }
+  .plan-precio { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .6rem; }
+  .plan-desde { flex-basis: 100%; font-size: .8rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; opacity: .75; }
+  .plan-importe { white-space: nowrap; font-family: var(--fuente-titulos); font-weight: 800; font-size: clamp(2.4rem, 3.6vw, 3.4rem); line-height: 1; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
+  .plan--destacado .plan-importe { color: var(--arena); }
+  .plan-periodo { font-weight: 700; opacity: .8; }
+  .plan-incluye { display: grid; gap: .6rem; padding-top: 1.25rem; border-top: 1px dashed color-mix(in srgb, currentColor 35%, transparent); }
+  .plan-incluye li { display: flex; gap: .6rem; align-items: flex-start; line-height: 1.4; }
+  .plan-incluye :global(.plan-check) { flex: none; margin-top: .1rem; }
+  .plan--destacado .plan-incluye :global(.plan-check) { color: var(--arena); }
+  .plan-boton { margin-top: auto; align-self: flex-start; }
+  .planes-nota { margin-top: 2rem; font-size: .95rem; font-weight: 600; color: var(--verde-hondo); opacity: .85; }
+</style>

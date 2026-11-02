@@ -1,0 +1,158 @@
+# Contenido de la web. Es lo único que rellena la plataforma NoExpertise.
+# Las secciones se muestran en el orden de este fichero. Para ocultar una: activa: false.
+# Apartado nuevo: un id propio (es su ancla, /#id) con `tipo:` = el diseño de otra sección o `texto`.
+# Negocio de ejemplo ficticio: nombres, teléfonos y correo inventados.
+nombre: Asesoría Onyar
+eslogan: Asesoría fiscal, laboral y contable en Girona para autónomos, pymes y particulares.
+sector: asesoria
+logo: ""          # ruta a una imagen en public/ (p. ej. /logo.svg). Vacío = inicial y nombre en texto.
+colores:
+  primario: "#1f4d3a"
+  acento: "#d8c3a0"
+  fondo: "#ffffff"
+  texto: "#14231c"
+contacto:
+  telefono: "972 41 28 60"
+  email: hola@asesoriaonyar.es
+  direccion: "Carrer de la Força 22, 1.º, 17004 Girona"
+  horario: Lunes a jueves de 8:30 a 14:00 y de 15:30 a 18:30. Viernes de 8:30 a 14:30.
+  whatsapp: "+34 623 41 28 60"
+redes:
+  instagram: ""
+  facebook: ""
+  linkedin: https://www.linkedin.com/
+menu:
+  - { texto: Servicios, url: "/#servicios" }
+  - { texto: Planes, url: "/#planes" }
+  - { texto: Calendario fiscal, url: "/#plazos" }
+  - { texto: Equipo, url: "/#equipo" }
+  - { texto: Contacto, url: "/#contacto" }
+boton_cabecera: { texto: Primera consulta gratis, url: "/#contacto" }
+seo:
+  titulo: Asesoría Onyar · Asesoría y gestoría en Girona
+  descripcion: "Asesoría fiscal, laboral y contable en Girona. Cuota fija al mes para autónomos y pymes, declaración de la renta y primera consulta gratis."
+  tipo: AccountingService   # tipo de schema.org (LocalBusiness, AccountingService, ProfessionalService…)
+marca_pie: true   # «Web creada con NoExpertise» en el pie (plan gratis)
+
+secciones:
+  hero:
+    activa: true
+    antetitulo: Asesoría y gestoría en Girona
+    titulo: Tus números, en orden. Tú, a lo tuyo.
+    texto: "Llevamos los impuestos, las nóminas y la contabilidad de autónomos y pequeñas empresas. Cuota fija al mes y una persona que te contesta el mismo día."
+    imagen: /fotos/hero.jpg
+    cta: { texto: Pide tu primera consulta, url: "/#contacto" }
+    cta_secundario: { texto: Ver planes, url: "/#planes" }
+    cifras:   # datos que flotan sobre la portada (titulo = cifra, texto = etiqueta)
+      - { titulo: "1998", texto: abiertos en el Barri Vell }
+      - { titulo: "640", texto: autónomos y pymes al día }
+      - { titulo: "24 h", texto: para responderte }
+      - { titulo: "12", texto: asesores en la oficina }
+
+  servicios:
+    activa: true
+    antetitulo: Servicios
+    titulo: Todo el papeleo de tu negocio, en un solo sitio
+    texto: "Elige por lo que eres. Cada cliente tiene un asesor de referencia que conoce su caso y sus fechas."
+    servicios:
+      - { titulo: Alta de autónomo, texto: "Hacienda, Seguridad Social y tarifa plana el mismo día. Te explicamos qué pagarás.", icono: documento, para: Autónomos }
+      - { titulo: IVA e IRPF trimestral, texto: "Modelos 303 y 130 presentados a tiempo, con aviso previo de lo que toca pagar.", icono: calendario, para: Autónomos }
+      - { titulo: Facturación y gastos, texto: "Nos mandas las facturas por foto o correo y las dejamos registradas.", icono: calculadora, para: Autónomos }
+      - { titulo: Contabilidad y cuentas anuales, texto: "Libros al día, cierre del ejercicio y depósito en el Registro Mercantil.", icono: grafico, para: Pymes }
+      - { titulo: Nóminas y seguros sociales, texto: "Contratos, altas, bajas, nóminas y finiquitos de tu plantilla.", icono: usuarios, para: Pymes }
+      - { titulo: Impuesto de sociedades, texto: "Previsión durante el año para que el modelo 200 no dé sustos.", icono: edificio, para: Pymes }
+      - { titulo: Declaración de la renta, texto: "La revisamos línea a línea para que no se te escape ninguna deducción.", icono: euro, para: Particulares }
+      - { titulo: Herencias y donaciones, texto: "Impuesto de sucesiones, plusvalías y cambios de titularidad.", icono: casa, para: Particulares }
+      - { titulo: Comunidades de propietarios, texto: "Administración de fincas: cuentas, juntas, recibos y proveedores.", icono: llave, para: Particulares }
+
+  planes:
+    activa: true
+    antetitulo: Planes
+    titulo: Una cuota fija. Sin sorpresas a final de trimestre.
+    texto: "Precios orientativos. Te damos el presupuesto cerrado cuando conocemos tu actividad."
+    planes:
+      - { nombre: Autónomo, precio: "45 €", periodo: al mes, incluye: "Impuestos trimestrales; Resumen anual; Registro de facturas; Consultas ilimitadas", destacado: false }
+      - { nombre: Autónomo plus, precio: "75 €", periodo: al mes, incluye: "Todo lo del plan Autónomo; Declaración de la renta; Una nómina incluida; Aviso de pagos por WhatsApp", destacado: true }
+      - { nombre: Pyme, precio: "desde 160 €", periodo: al mes, incluye: "Contabilidad completa; Impuesto de sociedades; Cuentas anuales; Nóminas aparte", destacado: false }
+      - { nombre: Renta, precio: "desde 40 €", periodo: por declaración, incluye: "Revisión del borrador; Deducciones autonómicas; Presentación y justificante", destacado: false }
+    nota: "Precios sin IVA. Las tasas oficiales, si las hay, aparte."
+
+  proceso:
+    activa: true
+    antetitulo: Cambiarte es fácil
+    titulo: Alta en tres pasos. Del resto nos ocupamos nosotros.
+    items:
+      - { titulo: Hablamos, texto: "Primera consulta gratis, en la oficina o por videollamada. Vemos tu actividad y lo que te conviene." }
+      - { titulo: Pedimos tus papeles, texto: "Nosotros hablamos con tu gestoría anterior y recogemos certificados y claves." }
+      - { titulo: Estás al día, texto: "Te damos tu calendario de pagos y un asesor de referencia. Tú solo mandas las facturas." }
+    galeria:
+      - /fotos/galeria-1.jpg
+      - /fotos/galeria-2.jpg
+      - /fotos/galeria-3.jpg
+      - /fotos/galeria-4.jpg
+
+  plazos:
+    activa: true
+    antetitulo: Calendario fiscal
+    titulo: Las fechas que no se te pueden pasar
+    texto: "Te avisamos una semana antes de cada una. Estas son las principales del año para autónomos y empresas."
+    imagen: /fotos/plazos.jpg
+    plazos:
+      - { fecha: 20 de enero, titulo: Cuarto trimestre, texto: "IVA (303), pago fraccionado (130) y retenciones del último trimestre del año." }
+      - { fecha: 30 de enero, titulo: Resúmenes anuales, texto: "Resumen anual del IVA (390) y de retenciones (190 y 180)." }
+      - { fecha: 28 de febrero, titulo: Operaciones con terceros, texto: "Declaración anual de operaciones con terceros (347)." }
+      - { fecha: 20 de abril, titulo: Primer trimestre, texto: "IVA, pago fraccionado y retenciones de enero a marzo." }
+      - { fecha: 30 de junio, titulo: Renta y patrimonio, texto: "Último día para la declaración de la renta y del patrimonio." }
+      - { fecha: 25 de julio, titulo: Sociedades, texto: "Impuesto de sociedades (200) del ejercicio anterior." }
+      - { fecha: 20 de octubre, titulo: Tercer trimestre, texto: "IVA, pago fraccionado y retenciones de julio a septiembre." }
+
+  equipo:
+    activa: true
+    antetitulo: Equipo
+    titulo: Personas que conocen tu caso por el nombre
+    texto: Doce asesores en la misma oficina, cada uno con su especialidad.
+    personas:
+      - { nombre: Montse Vilà, cargo: Socia fundadora · Fiscal, foto: /placeholders/persona.svg, texto: "Treinta años con autónomos y pequeñas empresas de Girona." }
+      - { nombre: Jordi Prat, cargo: Laboral, foto: /placeholders/persona.svg, texto: "Nóminas, contratos e inspecciones de trabajo." }
+      - { nombre: Laia Serra, cargo: Contabilidad, foto: /placeholders/persona.svg, texto: "Cierres, cuentas anuales y sociedades." }
+      - { nombre: Pere Casals, cargo: Administración de fincas, foto: /placeholders/persona.svg, texto: "Comunidades de propietarios del centro y de Montilivi." }
+
+  cita:
+    activa: true
+    antetitulo: Sin compromiso
+    titulo: Primera consulta gratis
+    texto: "Media hora para revisar cómo llevas tus impuestos y decirte qué mejorarías. Si no te convence, no pasa nada."
+    imagen: /fotos/cita.jpg
+    cta: { texto: Reservar mi consulta, url: "/#contacto" }
+    cta_secundario: { texto: Escribir por WhatsApp, url: "https://wa.me/34623412860" }
+    items:   # formas de hacer la consulta (titulo, texto, icono)
+      - { titulo: En la oficina, texto: "Carrer de la Força, en el Barri Vell.", icono: mapa }
+      - { titulo: Por videollamada, texto: Desde tu casa o tu negocio., icono: camara }
+      - { titulo: Por teléfono, texto: "Te llamamos a la hora que digas.", icono: telefono }
+
+  opiniones:
+    activa: true
+    antetitulo: Opiniones
+    titulo: Lo que dicen nuestros clientes
+    testimonios:
+      - { texto: "Desde que llevo la tienda con Onyar no he vuelto a pagar un recargo. Me avisan antes de cada trimestre y sé lo que me toca.", autor: "Núria F. · Tienda de ropa en la Rambla" }
+      - { texto: "Cambiamos de gestoría a mitad de año y ni lo notamos. Ellos pidieron todo a la anterior.", autor: "Marc y Elena · Restaurante" }
+      - { texto: "Me hicieron la renta y la herencia de mi madre con una paciencia infinita.", autor: "Rosa P. · Particular" }
+
+  preguntas:
+    activa: true
+    antetitulo: Preguntas frecuentes
+    titulo: Lo que nos preguntan antes de cambiarse
+    preguntas:
+      - { pregunta: "¿De verdad es gratis la primera consulta?", respuesta: "Sí. Media hora para ver tu situación y decirte qué te conviene, sin compromiso." }
+      - { pregunta: "¿Puedo cambiarme de gestoría a mitad de año?", respuesta: "Sí. Nos encargamos de pedir la documentación a tu gestoría anterior y de que no se pierda ningún plazo." }
+      - { pregunta: "¿Cómo os mando las facturas?", respuesta: "Por correo, por WhatsApp o en mano. Una foto con el móvil basta." }
+      - { pregunta: "¿Qué pasa si Hacienda me envía una carta?", respuesta: "Nos la reenvías y la contestamos nosotros. Los requerimientos de tus impuestos están incluidos en la cuota." }
+      - { pregunta: "¿Trabajáis con clientes de fuera de Girona?", respuesta: "Sí. Muchos clientes de la provincia trabajan con nosotros a distancia y solo vienen cuando quieren." }
+
+  contacto:
+    activa: true
+    antetitulo: Contacto
+    titulo: Hablemos de tus números
+    texto: "Cuéntanos a qué te dedicas y te llamamos en menos de 24 horas para la primera consulta gratis."
+    imagen: /fotos/contacto.jpg

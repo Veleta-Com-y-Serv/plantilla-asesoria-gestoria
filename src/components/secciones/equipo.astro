@@ -1,0 +1,45 @@
+---
+// Equipo: banda arena clara a todo el ancho. Titular a la izquierda y texto a la derecha; debajo, retratos 3:4 en
+// rejilla 1/2/4 con la esquina superior derecha muy curva y un velo verde al pasar el ratón; nombre en sans pesada
+// y cargo en una píldora. `personas` (nombre, cargo, foto, texto). Sin personas no se pinta.
+import { seccion } from '../../data/site';
+import Seccion from '../ui/Seccion.astro';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const personas = s ? s.personas.filter((p) => p && p.nombre) : [];
+---
+
+{
+  s && personas.length > 0 && (
+    <Seccion id={Astro.props.id} class="banda--clara">
+      <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+      <ul class="equipo">
+        {personas.map((p) => (
+          <li class="persona">
+            <div class="persona-foto foto-curva">
+              <Imagen src={p.foto || '/placeholders/persona.svg'} alt={p.nombre} ancho={600} alto={800} />
+            </div>
+            <h3 class="persona-nombre">{p.nombre}</h3>
+            {p.cargo && <p class="persona-cargo">{p.cargo}</p>}
+            {p.texto && <p class="persona-texto">{p.texto}</p>}
+          </li>
+        ))}
+      </ul>
+    </Seccion>
+  )
+}
+
+<style>
+  .equipo { display: grid; gap: 2.5rem 1.5rem; }
+  @media (min-width: 560px) { .equipo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1100px) { .equipo { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3rem 2rem; } }
+  .persona-foto { position: relative; aspect-ratio: 3 / 4; background: var(--arena); }
+  .persona-foto :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.05); }
+  .persona-foto::after { content: ""; position: absolute; inset: 0; background: var(--verde); mix-blend-mode: multiply; opacity: .25; transition: opacity .3s ease; }
+  .persona:hover .persona-foto::after { opacity: .05; }
+  .persona-nombre { margin-top: 1.25rem; font-size: clamp(1.4rem, 2.2vw, 1.75rem); color: var(--verde); }
+  .persona-cargo { display: inline-block; margin-top: .6rem; padding: .3rem .8rem; border-radius: 999px; background: var(--verde); color: #fff; font-size: .85rem; font-weight: 700; }
+  .persona-texto { margin-top: .75rem; opacity: .8; }
+</style>

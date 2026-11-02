@@ -1,0 +1,78 @@
+---
+// Calendario fiscal: banda blanca a todo el ancho, fila 50/50 con la foto `imagen` a sangre por la izquierda (fija
+// al hacer scroll en escritorio, esquina grande hacia el texto) y, a la derecha, el titular y las fechas como hojas
+// de calendario: día enorme sobre una pestaña arena y el mes debajo, con el título y el texto en filas rayadas.
+// Lista propia `plazos` (fecha, titulo, texto). «20 de enero» se parte en día y mes; otra fecha sale tal cual.
+import { seccion } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const plazos = s ? s.plazos.filter((p) => p && p.titulo) : [];
+const partir = (f?: string) => {
+  const m = String(f ?? '').trim().match(/^(\d{1,2})\s+(?:de\s+)?(.+)$/i);
+  return m ? { dia: m[1], mes: m[2] } : { dia: '', mes: String(f ?? '').trim() };
+};
+---
+
+{
+  s && (plazos.length > 0 || s.texto) && (
+    <section id={Astro.props.id} class:list={['plazos banda--blanco', { 'con-foto': !!s.imagen }]}>
+      {s.imagen && (
+        <div class="plazos-foto">
+          <div class="plazos-foto-marco foto-curva">
+            <Imagen src={s.imagen} alt={altSeccion(s)} ancho={1200} alto={1600} />
+          </div>
+        </div>
+      )}
+      <div class="plazos-cuerpo">
+        <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+        {plazos.length > 0 && (
+          <ol class="hojas">
+            {plazos.map((p) => {
+              const f = partir(p.fecha);
+              return (
+                <li class="hoja">
+                  {(f.dia || f.mes) && (
+                    <p class="hoja-fecha">
+                      {f.dia && <span class="hoja-dia">{f.dia}</span>}
+                      {f.mes && <span class="hoja-mes">{f.mes}</span>}
+                    </p>
+                  )}
+                  <div>
+                    <h3 class="hoja-titulo">{p.titulo}</h3>
+                    {p.texto && <p class="hoja-texto">{p.texto}</p>}
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        )}
+        {s.cta?.url && <a class="btn btn--verde mt-10" href={s.cta.url}>{s.cta.texto}</a>}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .plazos { display: grid; }
+  .plazos-foto { position: relative; }
+  .plazos-foto-marco { position: relative; aspect-ratio: 16 / 10; margin-right: 1rem; }
+  .plazos-foto-marco :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .plazos-cuerpo { width: 100%; max-width: var(--ancho); margin-inline: auto; padding: var(--ritmo) 1rem; }
+  @media (min-width: 768px) { .plazos-cuerpo { padding: var(--ritmo-md) 2rem; } }
+  @media (min-width: 1024px) {
+    .plazos.con-foto { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+    .plazos-foto-marco { position: absolute; inset: 0; aspect-ratio: auto; margin-right: 0; }
+    .plazos.con-foto .plazos-cuerpo { max-width: 52rem; margin-inline: 0 auto; padding-inline: clamp(3rem, 6vw, 7rem); }
+  }
+  .hojas { border-top: 1px solid var(--raya); }
+  .hoja { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 1.25rem; align-items: start; padding-block: 1.4rem; border-bottom: 1px solid var(--raya); }
+  @media (min-width: 640px) { .hoja { grid-template-columns: 7rem minmax(0, 1fr); gap: 2rem; } }
+  .hoja-fecha { display: grid; text-align: center; border-radius: var(--radio) var(--radio) var(--radio) 0; overflow: hidden; border: 2px solid var(--verde); }
+  .hoja-dia { padding: .35rem .25rem .2rem; background: var(--verde); color: #fff; font-family: var(--fuente-titulos); font-weight: 800; font-size: clamp(2rem, 4vw, 2.6rem); line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+  .hoja-mes { padding: .35rem .25rem; background: var(--arena-clara); color: var(--verde-hondo); font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; line-height: 1.2; overflow-wrap: anywhere; }
+  .hoja-titulo { font-size: clamp(1.25rem, 2vw, 1.6rem); color: var(--verde); line-height: 1.15; }
+  .hoja-texto { margin-top: .4rem; opacity: .8; }
+</style>

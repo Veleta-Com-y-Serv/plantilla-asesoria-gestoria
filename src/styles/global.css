@@ -1,0 +1,122 @@
+/* Asesoría y gestoría — estilo sobrio: verde bosque, arena y blanco. Sans geométrica muy pesada, cifras tabulares,
+   rayado de libro de cuentas, botones en píldora y fotos con una esquina muy curva (la que mira al texto).
+   Bandas a todo el ancho que alternan verde pleno, blanco, arena plena y arena clara.
+   Todo sale de las cuatro variables de site.yaml (--c-primario, --c-acento, --c-fondo, --c-texto) con color-mix. */
+@import "tailwindcss";
+@import "./comun.css";
+@config "../../tailwind.config.mjs";
+
+:root {
+  --fuente-texto: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --fuente-titulos: "Avenir Next", Avenir, "Century Gothic", Futura, "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --radio: .75rem;
+  --curva: clamp(3.5rem, 9vw, 9rem);   /* esquina grande de las fotos */
+  --ritmo: 4.5rem;
+  --ritmo-md: 7.5rem;
+  --ancho: 90rem;
+  --alto-cabecera: 4.25rem;
+
+  /* Derivados de la paleta */
+  --verde: var(--c-primario);
+  --verde-hondo: color-mix(in srgb, var(--c-primario) 72%, #000);
+  --verde-suave: color-mix(in srgb, var(--c-primario) 82%, #fff);
+  --arena: var(--c-acento);
+  --arena-clara: color-mix(in srgb, var(--c-acento) 32%, var(--c-fondo));
+  --arena-honda: color-mix(in srgb, var(--c-acento) 78%, var(--c-texto));
+  --blanco: var(--c-fondo);
+  --sobre-verde: color-mix(in srgb, var(--c-fondo) 86%, var(--c-acento)); /* texto claro en bandas verdes */
+  --tinta-verde: color-mix(in srgb, var(--c-primario) 85%, var(--c-texto)); /* verde legible sobre arena */
+  --raya: color-mix(in srgb, var(--c-texto) 12%, transparent);
+  --raya-clara: color-mix(in srgb, var(--c-fondo) 16%, transparent);
+}
+@media (min-width: 900px) { :root { --alto-cabecera: 5rem; } }
+
+@layer base {
+  html { scroll-padding-top: calc(var(--alto-cabecera) + .5rem); }
+  body { font-family: var(--fuente-texto); font-size: 1.0625rem; line-height: 1.6; background: var(--blanco); }
+  h1, h2, h3 { font-family: var(--fuente-titulos); font-weight: 800; letter-spacing: -0.035em; line-height: 1.02; }
+  main { padding-top: var(--alto-cabecera); }
+}
+
+@layer components {
+  .contenedor { max-width: var(--ancho); }
+  @media (min-width: 1200px) { .contenedor { padding-inline: 3rem; } }
+
+  /* Bandas a todo el ancho */
+  .banda { position: relative; padding-block: var(--ritmo); }
+  @media (min-width: 768px) { .banda { padding-block: var(--ritmo-md); } }
+  .banda--blanco { background: var(--blanco); color: var(--c-texto); }
+  .banda--arena { background: var(--arena); color: var(--c-texto); }
+  .banda--clara { background: var(--arena-clara); color: var(--c-texto); }
+  .banda--verde { background: var(--verde); color: var(--sobre-verde); }
+  .banda--hondo { background: var(--verde-hondo); color: var(--sobre-verde); }
+  .oscuro { color: var(--sobre-verde); }
+
+  /* Rayado de libro de cuentas (fondo decorativo) */
+  .rayado { background-image: repeating-linear-gradient(to bottom, transparent 0 calc(2.75rem - 1px), var(--raya) calc(2.75rem - 1px) 2.75rem); }
+  .banda--verde.rayado, .banda--hondo.rayado { background-image: repeating-linear-gradient(to bottom, transparent 0 calc(2.75rem - 1px), var(--raya-clara) calc(2.75rem - 1px) 2.75rem); }
+
+  /* Antetítulo con barra gruesa de color */
+  .antetitulo { display: flex; align-items: center; gap: .75rem; font-family: var(--fuente-titulos); font-size: .78rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--verde); }
+  .antetitulo::before { content: ""; width: 2rem; height: .3rem; border-radius: 999px; background: currentColor; flex: none; }
+  .banda--verde .antetitulo, .banda--hondo .antetitulo, .oscuro .antetitulo { color: var(--arena); }
+  .banda--arena .antetitulo { color: var(--tinta-verde); }
+  .titular--centro .antetitulo { justify-content: center; }
+
+  .titulo-seccion { margin-top: 1rem; font-size: clamp(2.2rem, 6vw, 4.75rem); color: var(--verde); }
+  .banda--arena .titulo-seccion { color: var(--tinta-verde); }
+  .banda--verde .titulo-seccion, .banda--hondo .titulo-seccion, .oscuro .titulo-seccion { color: #fff; }
+  .titular { max-width: 56rem; margin-bottom: 3rem; }
+  @media (min-width: 768px) { .titular { margin-bottom: 4rem; } }
+  .titular--centro { margin-inline: auto; text-align: center; }
+  .titular-texto { margin-top: 1.25rem; font-size: 1.15rem; opacity: .85; max-width: 40rem; }
+  .titular--centro .titular-texto { margin-inline: auto; }
+
+  /* Botones en píldora, gruesos */
+  .btn, .btn-sec { min-height: 3.25rem; padding: .85rem 1.75rem; font-family: var(--fuente-titulos); font-size: 1rem; font-weight: 800; letter-spacing: -0.01em; border-radius: 999px; }
+  .btn { background: var(--arena); color: var(--verde-hondo); border: 2px solid var(--arena); }
+  .btn:hover { background: #fff; border-color: #fff; }
+  .btn-sec { border: 2px solid currentColor; color: inherit; background: transparent; }
+  .btn-sec:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+  .btn--verde { background: var(--verde); color: #fff; border-color: var(--verde); }
+  .btn--verde:hover { background: var(--verde-hondo); border-color: var(--verde-hondo); }
+
+  /* Fotos con una esquina grande */
+  .foto-curva { border-radius: 0 var(--curva) 0 0; overflow: hidden; }
+  .foto-curva--izq { border-radius: var(--curva) 0 0 0; overflow: hidden; }
+
+  /* Cabecera fija, siempre sólida (blanca) */
+  .cabecera--cuenta { position: fixed; top: 0; inset-inline: 0; z-index: 50; background: var(--blanco); color: var(--c-texto); border-bottom: 1px solid var(--raya); }
+  .cabecera--cuenta.con-sombra { box-shadow: 0 8px 24px -16px rgb(0 0 0 / .35); }
+  .cabecera--cuenta .cabecera-fila { min-height: var(--alto-cabecera); gap: 1.5rem; }
+  .cabecera--cuenta .marca-inicial { display: grid; place-items: center; flex: none; width: 2.6rem; height: 2.6rem; border-radius: .7rem .7rem .7rem 0; background: var(--verde); color: var(--arena); font-family: var(--fuente-titulos); font-weight: 800; font-size: 1.35rem; }
+  .cabecera--cuenta .marca-nombre { font-family: var(--fuente-titulos); font-weight: 800; font-size: 1.2rem; letter-spacing: -0.03em; color: var(--verde); }
+  .cabecera--cuenta .cabecera-nav { gap: 1.75rem; }
+  .cabecera--cuenta .cabecera-nav a { font-weight: 650; font-size: .95rem; padding-block: .5rem; box-shadow: inset 0 -3px 0 transparent; }
+  .cabecera--cuenta .cabecera-nav a:hover { box-shadow: inset 0 -3px 0 var(--arena); }
+  .cabecera--cuenta .cabecera-cta { min-height: 2.75rem; padding-inline: 1.3rem; font-size: .92rem; }
+  .cabecera--cuenta .menu-movil summary { min-height: 2.75rem; padding-inline: 1rem; margin-right: -.25rem; border-radius: 999px; background: var(--verde); color: #fff; font-size: .9rem; }
+  .cabecera--cuenta .menu-movil-panel { background: var(--blanco); padding: .5rem 1rem 1.5rem; border-top: 1px solid var(--raya); box-shadow: 0 24px 40px rgb(0 0 0 / .18); }
+  .cabecera--cuenta .menu-movil-panel a { min-height: 3rem; display: flex; align-items: center; font-family: var(--fuente-titulos); font-weight: 800; font-size: 1.35rem; letter-spacing: -0.02em; color: var(--verde); }
+  .cabecera--cuenta .menu-movil-panel .btn { color: #fff; font-size: 1rem; }
+
+  /* Pie a todo el ancho, verde hondo */
+  .pie--cuenta { background: var(--verde-hondo); color: var(--sobre-verde); padding-top: 4.5rem; }
+  .pie--cuenta .pie-rejilla { gap: 2.5rem; }
+  @media (min-width: 768px) { .pie--cuenta .pie-rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1100px) { .pie--cuenta .pie-rejilla { grid-template-columns: 1.6fr 1fr 1fr 1fr; } }
+  .pie--cuenta .pie-nombre { font-family: var(--fuente-titulos); font-weight: 800; letter-spacing: -0.035em; font-size: clamp(1.8rem, 3.4vw, 2.6rem); color: #fff; line-height: 1.05; }
+  .pie--cuenta .pie-titulo { color: var(--arena); opacity: 1; letter-spacing: .16em; font-weight: 800; font-size: .75rem; }
+  .pie--cuenta .pie-lista a:hover { color: var(--arena); }
+  .pie--cuenta .pie-redes a { border-radius: 999px; background: color-mix(in srgb, var(--c-fondo) 10%, transparent); min-width: 2.75rem; min-height: 2.75rem; justify-content: center; align-items: center; }
+  .pie--cuenta .pie-legal { border-top-color: var(--raya-clara); margin-top: 4rem; }
+
+  /* Formulario */
+  .formulario .campo label { font-weight: 700; font-size: .9rem; color: var(--verde); }
+  .formulario .campo input, .formulario .campo textarea, .formulario .campo select { width: 100%; font: inherit; color: inherit; min-height: 3.1rem; padding: .75rem 1rem; background: #fff; border: 2px solid color-mix(in srgb, var(--c-texto) 14%, transparent); border-radius: var(--radio); }
+  .formulario .campo input:focus, .formulario .campo textarea:focus, .formulario .campo select:focus { border-color: var(--verde); outline: 3px solid color-mix(in srgb, var(--c-primario) 25%, transparent); outline-offset: 0; }
+  .formulario .btn { justify-self: stretch; }
+  @media (min-width: 640px) { .formulario .btn { justify-self: start; } }
+
+  .texto-largo h2 { font-family: var(--fuente-titulos); font-weight: 800; letter-spacing: -0.02em; font-size: 1.6rem; color: var(--verde); }
+}

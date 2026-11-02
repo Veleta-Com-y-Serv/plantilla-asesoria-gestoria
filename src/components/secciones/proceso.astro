@@ -1,0 +1,65 @@
+---
+// Proceso («Alta en tres pasos»): banda verde hondo rayada a todo el ancho. Pasos en columnas con números enormes
+// perfilados en arena y una línea con flecha que los une; debajo, la `galeria` como franja de fotos de borde a
+// borde sin margen (2 columnas en móvil, 4 en escritorio). `items` (titulo, texto). Sin pasos ni galería no se pinta.
+import { seccion } from '../../data/site';
+import { altGaleria } from '../../lib/seo';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const pasos = s ? s.items.filter((it) => it && it.titulo) : [];
+const fotos = s ? s.galeria.filter(Boolean).slice(0, 8) : [];
+---
+
+{
+  s && (pasos.length > 0 || fotos.length > 0) && (
+    <section id={Astro.props.id} class="proceso banda--hondo rayado">
+      <div class="contenedor proceso-cuerpo">
+        <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+        {pasos.length > 0 && (
+          <ol class="pasos" style={`--n:${Math.min(pasos.length, 4)}`}>
+            {pasos.map((p, i) => (
+              <li class="paso">
+                <span class="paso-num" aria-hidden="true">{i + 1}</span>
+                <h3 class="paso-titulo">{p.titulo}</h3>
+                {p.texto && <p class="paso-texto">{p.texto}</p>}
+              </li>
+            ))}
+          </ol>
+        )}
+        {s.cta?.url && <a class="btn mt-12" href={s.cta.url}>{s.cta.texto}</a>}
+      </div>
+      {fotos.length > 0 && (
+        <ul class="franja">
+          {fotos.map((f, i) => (
+            <li><Imagen src={f} alt={altGaleria(i)} ancho={800} alto={1000} /></li>
+          ))}
+        </ul>
+      )}
+    </section>
+  )
+}
+
+<style>
+  .proceso { color: var(--sobre-verde); }
+  .proceso-cuerpo { padding-block: var(--ritmo); }
+  @media (min-width: 768px) { .proceso-cuerpo { padding-block: var(--ritmo-md); } }
+  .pasos { display: grid; gap: 2.5rem; counter-reset: paso; }
+  @media (min-width: 900px) { .pasos { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 3rem; } }
+  .paso { position: relative; }
+  .paso-num { display: block; font-family: var(--fuente-titulos); font-weight: 800; font-size: clamp(5rem, 11vw, 9rem); line-height: .85; letter-spacing: -0.06em; color: transparent; -webkit-text-stroke: 2px var(--arena); font-variant-numeric: tabular-nums; }
+  @supports not (-webkit-text-stroke: 2px red) { .paso-num { color: var(--arena); } }
+  @media (min-width: 900px) {
+    .paso:not(:last-child)::after { content: ""; position: absolute; top: 2.6rem; left: 7.5rem; right: -1.5rem; height: 2px; background: linear-gradient(90deg, var(--arena), color-mix(in srgb, var(--c-acento) 20%, transparent)); }
+  }
+  .paso-titulo { margin-top: 1.25rem; font-size: clamp(1.5rem, 2.4vw, 2.1rem); color: #fff; }
+  .paso-texto { margin-top: .75rem; max-width: 26rem; opacity: .88; }
+  .franja { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (min-width: 900px) { .franja { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .franja li { position: relative; aspect-ratio: 4 / 5; overflow: hidden; }
+  .franja li:first-child { border-top-left-radius: var(--curva); }
+  .franja li:nth-child(2) { border-top-right-radius: var(--curva); }
+  @media (min-width: 900px) { .franja li:nth-child(2) { border-top-right-radius: 0; } .franja li:last-child { border-top-right-radius: var(--curva); } }
+  .franja :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+</style>

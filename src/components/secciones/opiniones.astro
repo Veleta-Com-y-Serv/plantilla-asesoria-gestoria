@@ -1,0 +1,56 @@
+---
+// Opiniones: banda verde pleno a todo el ancho. La primera opinión va como cita enorme en sans pesada (la banda de
+// cita grande de la web) con unas comillas arena gigantes; las demás, debajo, en columnas 1/2/3 separadas por
+// reglas. `testimonios` (texto, autor). Sin opiniones no se pinta.
+import { seccion } from '../../data/site';
+import Seccion from '../ui/Seccion.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const lista = s ? s.testimonios.filter((t) => t && t.texto) : [];
+const [primera, ...resto] = lista;
+---
+
+{
+  s && primera && (
+    <Seccion id={Astro.props.id} class="banda--verde">
+      <div class="opi-cabeza">
+        {s.antetitulo && <p class="antetitulo">{s.antetitulo}</p>}
+        {s.titulo && <h2 class="opi-titulo">{s.titulo}</h2>}
+      </div>
+      <figure class="opi-grande">
+        <span class="opi-comillas" aria-hidden="true">“</span>
+        <blockquote><p>{primera.texto}</p></blockquote>
+        {primera.autor && <figcaption>{primera.autor}</figcaption>}
+      </figure>
+      {resto.length > 0 && (
+        <ul class="opi-resto" style={`--n:${Math.min(resto.length, 3)}`}>
+          {resto.map((t) => (
+            <li>
+              <figure>
+                <blockquote><p>«{t.texto}»</p></blockquote>
+                {t.autor && <figcaption>{t.autor}</figcaption>}
+              </figure>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Seccion>
+  )
+}
+
+<style>
+  .opi-cabeza { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--raya-clara); }
+  .opi-titulo { font-size: clamp(1.2rem, 2vw, 1.5rem); color: #fff; letter-spacing: -0.02em; }
+  .opi-grande { position: relative; padding-block: 3.5rem 3rem; }
+  @media (min-width: 768px) { .opi-grande { padding-block: 5rem 4rem; padding-left: 9rem; } }
+  .opi-comillas { display: block; height: 4.5rem; font-family: var(--fuente-titulos); font-weight: 800; font-size: 9rem; line-height: 1; color: var(--arena); }
+  @media (min-width: 768px) { .opi-comillas { position: absolute; left: 0; top: 4.25rem; height: auto; font-size: 13rem; line-height: .8; } }
+  .opi-grande blockquote p { font-family: var(--fuente-titulos); font-weight: 800; font-size: clamp(1.75rem, 4.6vw, 3.9rem); line-height: 1.08; letter-spacing: -0.04em; color: #fff; max-width: 26ch; }
+  .opi-grande figcaption { margin-top: 2rem; font-weight: 700; color: var(--arena); }
+  .opi-resto { display: grid; border-top: 1px solid var(--raya-clara); }
+  @media (min-width: 768px) { .opi-resto { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); } }
+  .opi-resto li { padding-block: 2rem; border-bottom: 1px solid var(--raya-clara); }
+  @media (min-width: 768px) { .opi-resto li { padding: 2.5rem 2.5rem 0 0; border-bottom: 0; } .opi-resto li + li { padding-left: 2.5rem; border-left: 1px solid var(--raya-clara); } }
+  .opi-resto blockquote p { font-size: 1.2rem; line-height: 1.5; color: #fff; }
+  .opi-resto figcaption { margin-top: 1rem; font-size: .92rem; font-weight: 700; color: var(--arena); }
+</style>

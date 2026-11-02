@@ -1,0 +1,83 @@
+---
+// Servicios: banda blanca a todo el ancho. Titular grande y, debajo, una columna por destinatario (campo `para`:
+// «Autónomos», «Pymes», «Particulares»…) con su nombre enorme, una barra verde gruesa y los servicios en filas
+// rayadas como un libro de cuentas (icono en círculo arena, título y texto). Si ningún servicio trae `para`, una
+// rejilla de 1/2/3 columnas sin cabeceras. Lista propia `servicios` (titulo, texto, icono, para).
+import { seccion } from '../../data/site';
+import type { Servicio } from '../../data/site';
+import Seccion from '../ui/Seccion.astro';
+import Titular from '../ui/Titular.astro';
+import Icono from '../ui/Icono.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const lista = s ? s.servicios.filter((x) => x && x.titulo) : [];
+const grupos: { nombre: string; servicios: Servicio[] }[] = [];
+for (const x of lista) {
+  const nombre = String(x.para ?? '').trim();
+  let g = grupos.find((y) => y.nombre === nombre);
+  if (!g) grupos.push((g = { nombre, servicios: [] }));
+  g.servicios.push(x);
+}
+const conGrupos = grupos.some((g) => g.nombre);
+---
+
+{
+  s && (lista.length > 0 || s.titulo || s.texto) && (
+    <Seccion id={Astro.props.id} class="banda--blanco">
+      <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+      {lista.length > 0 && conGrupos && (
+        <div class="grupos" style={`--n:${Math.min(grupos.length, 4)}`}>
+          {grupos.map((g) => (
+            <div class="grupo">
+              <h3 class="grupo-nombre">
+                <span>{g.nombre || 'Otros'}</span>
+                <span class="grupo-num" aria-hidden="true">{String(g.servicios.length).padStart(2, '0')}</span>
+              </h3>
+              <ul class="filas">
+                {g.servicios.map((x) => (
+                  <li class="fila">
+                    <span class="fila-icono"><Icono nombre={x.icono} tam={22} /></span>
+                    <div>
+                      <p class="fila-titulo">{x.titulo}</p>
+                      {x.texto && <p class="fila-texto">{x.texto}</p>}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )}
+      {lista.length > 0 && !conGrupos && (
+        <ul class="filas filas--rejilla">
+          {lista.map((x) => (
+            <li class="fila">
+              <span class="fila-icono"><Icono nombre={x.icono} tam={22} /></span>
+              <div>
+                <p class="fila-titulo">{x.titulo}</p>
+                {x.texto && <p class="fila-texto">{x.texto}</p>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+      {s.cta?.url && <a class="btn btn--verde mt-12" href={s.cta.url}>{s.cta.texto}</a>}
+    </Seccion>
+  )
+}
+
+<style>
+  .grupos { display: grid; gap: 3.5rem; }
+  @media (min-width: 900px) { .grupos { grid-template-columns: repeat(min(var(--n), 2), minmax(0, 1fr)); gap: 3rem; } }
+  @media (min-width: 1200px) { .grupos { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 3.5rem; } }
+  .grupo-nombre { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; border-bottom: .45rem solid var(--verde); font-size: clamp(2rem, 3.6vw, 3rem); color: var(--verde); }
+  .grupo-num { font-size: .95rem; letter-spacing: .08em; font-variant-numeric: tabular-nums; padding: .3rem .7rem; border-radius: 999px; background: var(--arena); color: var(--verde-hondo); }
+  .filas { display: grid; }
+  .fila { display: flex; gap: 1rem; padding-block: 1.35rem; border-bottom: 1px solid var(--raya); }
+  .fila-icono { display: grid; place-items: center; flex: none; width: 2.9rem; height: 2.9rem; border-radius: 999px; background: var(--arena-clara); color: var(--verde); }
+  .fila-titulo { font-family: var(--fuente-titulos); font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; line-height: 1.2; color: var(--c-texto); }
+  .fila-texto { margin-top: .35rem; font-size: .98rem; opacity: .78; }
+  .filas--rejilla { border-top: .45rem solid var(--verde); column-gap: 3rem; }
+  @media (min-width: 768px) { .filas--rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1200px) { .filas--rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+</style>

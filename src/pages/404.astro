@@ -1,0 +1,35 @@
+---
+// Página no encontrada con el diseño de la plantilla: banda verde rayada a todo el ancho, «404» enorme perfilado en
+// arena y título grande.
+import Base from '../layouts/Base.astro';
+import { site, tel } from '../data/site';
+const c = site.contacto;
+---
+
+<Base titulo="Página no encontrada">
+  <section class="banda banda--verde rayado pagina-cabeza">
+    <div class="contenedor pagina-rejilla">
+      <p class="pagina-num" aria-hidden="true">404</p>
+      <div>
+        <p class="antetitulo">Página no encontrada</p>
+        <h1 class="pagina-titulo">Esta página no cuadra.</h1>
+        <p class="pagina-texto">Puede que el enlace esté mal o que la página se haya movido. Vuelve al inicio o llámanos si necesitas ayuda.</p>
+        <div class="pagina-botones">
+          <a class="btn" href="/">Volver al inicio</a>
+          {c.telefono && <a class="btn-sec" href={tel(c.telefono)}>Llamar al {c.telefono}</a>}
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .pagina-cabeza { min-height: 70svh; display: flex; align-items: center; }
+  .pagina-rejilla { display: grid; gap: 1.5rem; align-items: center; }
+  @media (min-width: 1024px) { .pagina-rejilla { grid-template-columns: auto 1fr; gap: 5rem; } }
+  .pagina-num { font-family: var(--fuente-titulos); font-weight: 800; font-size: clamp(6rem, 22vw, 16rem); line-height: .85; letter-spacing: -0.06em; color: transparent; -webkit-text-stroke: 2px var(--arena); }
+  .pagina-titulo { margin-top: 1.25rem; font-size: clamp(2.5rem, 7vw, 5.5rem); line-height: .98; letter-spacing: -0.045em; color: #fff; max-width: 14ch; }
+  .pagina-texto { margin-top: 1.5rem; max-width: 36rem; font-size: 1.15rem; opacity: .9; }
+  .pagina-botones { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2.5rem; }
+  .pagina-botones .btn-sec { color: #fff; }
+</style>

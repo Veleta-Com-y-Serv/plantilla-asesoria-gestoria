@@ -1,0 +1,50 @@
+---
+// Preguntas frecuentes: acordeón nativo <details>, sin JavaScript. Banda blanca rayada a todo el ancho: titular a la
+// izquierda (fijo al hacer scroll en escritorio) y preguntas en sans pesada a la derecha, cada una con un botón
+// redondo verde que gira de + a −. `preguntas[]` (pregunta, respuesta). Sin preguntas no se pinta.
+import { seccion } from '../../data/site';
+import Seccion from '../ui/Seccion.astro';
+import Titular from '../ui/Titular.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const preguntas = s ? s.preguntas.filter((p) => p && p.pregunta) : [];
+---
+
+{
+  s && preguntas.length > 0 && (
+    <Seccion id={Astro.props.id} class="banda--blanco">
+      <div class="faq-rejilla">
+        <div class="faq-cabeza">
+          <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+        </div>
+        <div class="faq-lista">
+          {preguntas.map((p) => (
+            <details class="faq">
+              <summary>
+                <span class="faq-pregunta">{p.pregunta}</span>
+                <span class="faq-signo" aria-hidden="true" />
+              </summary>
+              {p.respuesta && <p class="faq-respuesta">{p.respuesta}</p>}
+            </details>
+          ))}
+        </div>
+      </div>
+    </Seccion>
+  )
+}
+
+<style>
+  .faq-rejilla { display: grid; }
+  @media (min-width: 1024px) { .faq-rejilla { grid-template-columns: 5fr 7fr; gap: 5rem; align-items: start; } .faq-cabeza { position: sticky; top: calc(var(--alto-cabecera) + 2rem); } }
+  .faq-lista { display: grid; gap: .75rem; }
+  .faq { border-radius: var(--radio) var(--radio) var(--radio) 0; background: var(--arena-clara); }
+  .faq[open] { background: color-mix(in srgb, var(--c-acento) 55%, var(--c-fondo)); }
+  .faq summary { display: flex; align-items: center; gap: 1rem; min-height: 3rem; padding: 1.25rem 1.25rem 1.25rem 1.5rem; list-style: none; cursor: pointer; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq-pregunta { flex: 1; font-family: var(--fuente-titulos); font-weight: 800; letter-spacing: -0.02em; font-size: clamp(1.1rem, 1.8vw, 1.35rem); line-height: 1.25; color: var(--verde-hondo); }
+  .faq-signo { position: relative; flex: none; width: 2.5rem; height: 2.5rem; border-radius: 999px; background: var(--verde); transition: transform .25s ease; }
+  .faq-signo::before, .faq-signo::after { content: ""; position: absolute; left: 50%; top: 50%; width: .9rem; height: 2px; margin: -1px 0 0 -.45rem; background: #fff; }
+  .faq-signo::after { transform: rotate(90deg); transition: transform .25s ease; }
+  .faq[open] .faq-signo::after { transform: rotate(0deg); }
+  .faq-respuesta { padding: 0 1.5rem 1.5rem; max-width: 44rem; color: var(--c-texto); }
+</style>
