@@ -1,4 +1,4 @@
-# Asesoría y gestoría: brief de diseño
+﻿# Asesoría y gestoría: brief de diseño
 
 Plantilla `asesoria-gestoria` creada el 02/11/2026 a partir de `abogados` (base de origen) con
 `php artisan plantillas:nueva` y rediseñada entera a ancho completo: de la base solo queda la estructura técnica.
@@ -64,3 +64,9 @@ puerta verde (contacto, 4:3). Sin personas, sin texto ni cifras legibles, sin lo
   caja centrada estrecha con tarjetas blancas.
 - Sombras de tarjeta por todas partes, degradados vivos, iconos de colores.
 - Poner precios, cifras u opiniones fijos en los componentes: todo sale de `site.yaml` y lo que está vacío no se pinta.
+
+## Páginas propias (fichas)
+Con la misma piel que la portada (banda verde rayada con título enorme y foto de esquina curva, cuerpo blanco con tabla de datos de barra verde gruesa y caja de consulta en arena, otros servicios en filas rayadas sobre arena clara): cabecera y pie de la plantilla, migas (Inicio › Sección › Elemento), hero con la foto del
+elemento (sin foto, su icono), `detalle` en párrafos, tabla de datos, caja de contacto, galería (`imagenes`) y otros elementos
+de la misma lista.
+

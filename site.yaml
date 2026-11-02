@@ -55,13 +55,59 @@ secciones:
     titulo: Todo el papeleo de tu negocio, en un solo sitio
     texto: "Elige por lo que eres. Cada cliente tiene un asesor de referencia que conoce su caso y sus fechas."
     servicios:
-      - { titulo: Alta de autónomo, texto: "Hacienda, Seguridad Social y tarifa plana el mismo día. Te explicamos qué pagarás.", icono: documento, para: Autónomos }
-      - { titulo: IVA e IRPF trimestral, texto: "Modelos 303 y 130 presentados a tiempo, con aviso previo de lo que toca pagar.", icono: calendario, para: Autónomos }
+      - titulo: Alta de autónomo
+        texto: "Hacienda, Seguridad Social y tarifa plana el mismo día. Te explicamos qué pagarás."
+        icono: documento
+        para: Autónomos
+        imagenes: "/fotos/galeria-1.jpg; /fotos/galeria-2.jpg; /fotos/galeria-3.jpg"
+        detalle: |
+          Dar de alta a un autónomo implica varios trámites que conviene hacer en el orden correcto: el alta censal en Hacienda, el alta en el régimen de trabajadores autónomos de la Seguridad Social y la elección del epígrafe que mejor encaja con la actividad. Nos sentamos contigo, entendemos qué vas a vender y a quién, y preparamos toda la documentación para presentarla el mismo día.
+
+          Te explicamos con claridad qué cuota pagarás cada mes, qué ayudas o bonificaciones te pueden corresponder al empezar y qué impuestos tendrás que presentar a partir de ese momento. También te dejamos configurada la forma de emitir facturas para que cumplan lo que exige la ley desde la primera venta.
+
+          Es un servicio pensado para quien empieza o se plantea dar el salto desde un empleo. Al terminar tienes tu calendario de pagos, un asesor de referencia al que escribir cuando dudes y la tranquilidad de haber empezado con todo en regla.
+      - titulo: IVA e IRPF trimestral
+        texto: "Modelos 303 y 130 presentados a tiempo, con aviso previo de lo que toca pagar."
+        icono: calendario
+        para: Autónomos
+        detalle: |
+          Cada trimestre toca presentar el IVA y el pago fraccionado del IRPF, y un olvido o un error cuesta recargos que se evitan con un poco de orden. Nos encargamos de preparar y presentar el modelo 303 y el modelo 130 dentro de plazo, a partir de las facturas emitidas y recibidas que nos has ido mandando durante el periodo.
+
+          Antes de presentar nada te avisamos de lo que va a salir a pagar o a devolver, para que no te lleves sorpresas en la cuenta del banco. Si ves que el resultado es alto, repasamos juntos qué gastos son deducibles y cuáles todavía no nos has pasado, y valoramos si merece la pena adelantar o aplazar alguna compra.
+
+          Es el servicio más habitual entre autónomos: trabajas con tu ritmo habitual y nosotros llevamos el calendario. Recibes el justificante de cada presentación y un resumen sencillo de cómo va tu año, sin tecnicismos ni jerga fiscal.
       - { titulo: Facturación y gastos, texto: "Nos mandas las facturas por foto o correo y las dejamos registradas.", icono: calculadora, para: Autónomos }
-      - { titulo: Contabilidad y cuentas anuales, texto: "Libros al día, cierre del ejercicio y depósito en el Registro Mercantil.", icono: grafico, para: Pymes }
-      - { titulo: Nóminas y seguros sociales, texto: "Contratos, altas, bajas, nóminas y finiquitos de tu plantilla.", icono: usuarios, para: Pymes }
+      - titulo: Contabilidad y cuentas anuales
+        texto: "Libros al día, cierre del ejercicio y depósito en el Registro Mercantil."
+        icono: grafico
+        para: Pymes
+        detalle: |
+          Una empresa necesita tener la contabilidad al día no solo por obligación legal, sino para saber cómo va de verdad: qué gana, qué debe y qué le deben. Llevamos los libros contables de tu sociedad, clasificamos facturas, conciliamos los movimientos del banco y te enseñamos cada trimestre un resumen con las cifras que importan.
+
+          Al cerrar el ejercicio preparamos las cuentas anuales, las revisamos contigo antes de aprobarlas y nos ocupamos de su depósito en el Registro Mercantil, además de los libros oficiales que corresponda legalizar. Si hace falta, también te acompañamos en la junta de socios para explicar el resultado.
+
+          Es un servicio para pymes y sociedades pequeñas que no quieren montar un departamento administrativo propio. Trabajamos con el programa que prefieras o te damos acceso al nuestro, de modo que tú y tu equipo veáis la información al mismo tiempo que nosotros y podáis decidir con datos.
+      - titulo: Nóminas y seguros sociales
+        texto: "Contratos, altas, bajas, nóminas y finiquitos de tu plantilla."
+        icono: usuarios
+        para: Pymes
+        detalle: |
+          Tener personas contratadas supone una cadena de obligaciones mensuales que no admite retrasos. Nos ocupamos de redactar los contratos, comunicar las altas y bajas a la Seguridad Social, calcular y emitir las nóminas, presentar los seguros sociales y preparar los finiquitos cuando una relación laboral termina.
+
+          Antes de contratar te explicamos qué modalidad te conviene según la duración y la jornada, qué bonificaciones podrías aplicar y qué convenio colectivo corresponde a tu actividad. Cada mes recibes las nóminas listas para repartir y un resumen del coste total de tu plantilla, para que puedas planificar con antelación.
+
+          Pensado para pymes y autónomos con empleados, desde la primera contratación hasta equipos más grandes. Atendemos también las dudas del día a día, como una baja por enfermedad, un cambio de horario o unas vacaciones, y hablamos con los trabajadores si lo prefieres, sin que tengas que ocuparte tú de nada.
       - { titulo: Impuesto de sociedades, texto: "Previsión durante el año para que el modelo 200 no dé sustos.", icono: edificio, para: Pymes }
-      - { titulo: Declaración de la renta, texto: "La revisamos línea a línea para que no se te escape ninguna deducción.", icono: euro, para: Particulares }
+      - titulo: Declaración de la renta
+        texto: "La revisamos línea a línea para que no se te escape ninguna deducción."
+        icono: euro
+        para: Particulares
+        detalle: |
+          La campaña de la renta es la ocasión de recuperar lo que te corresponde y de no pagar de más. Revisamos línea por línea el borrador que te propone Hacienda, comprobamos que los datos fiscales estén completos y buscamos las deducciones estatales y autonómicas que se suelen escapar, como las de vivienda, familia, donativos o gastos de salud.
+
+          Si tuviste varios pagadores, vendiste o heredaste algún bien, recibiste alquileres o tienes inversiones, lo analizamos con calma para declararlo bien y evitar requerimientos posteriores. Te explicamos el resultado antes de presentar, si sale a pagar puedes elegir cómo fraccionarlo, y te entregamos el justificante de la presentación.
+
+          Es un servicio para particulares, trabajadores por cuenta ajena, jubilados y familias que prefieren no pelearse con la plataforma de la Agencia Tributaria. Solo necesitas traernos tus datos y los documentos del año; del resto nos encargamos nosotros, con trato cercano y sin prisas.
       - { titulo: Herencias y donaciones, texto: "Impuesto de sucesiones, plusvalías y cambios de titularidad.", icono: casa, para: Particulares }
       - { titulo: Comunidades de propietarios, texto: "Administración de fincas: cuentas, juntas, recibos y proveedores.", icono: llave, para: Particulares }
 

@@ -3,11 +3,13 @@
 // «Autónomos», «Pymes», «Particulares»…) con su nombre enorme, una barra verde gruesa y los servicios en filas
 // rayadas como un libro de cuentas (icono en círculo arena, título y texto). Si ningún servicio trae `para`, una
 // rejilla de 1/2/3 columnas sin cabeceras. Lista propia `servicios` (titulo, texto, icono, para).
+// Los servicios con `detalle` tienen página propia (/servicios/<slug>/): el título es un enlace y la fila entera clicable.
 import { seccion } from '../../data/site';
 import type { Servicio } from '../../data/site';
 import Seccion from '../ui/Seccion.astro';
 import Titular from '../ui/Titular.astro';
 import Icono from '../ui/Icono.astro';
+import { enlaceDe } from '../../lib/paginas';
 interface Props { id: string }
 const s = seccion(Astro.props.id);
 const lista = s ? s.servicios.filter((x) => x && x.titulo) : [];
@@ -38,8 +40,9 @@ const conGrupos = grupos.some((g) => g.nombre);
                   <li class="fila">
                     <span class="fila-icono"><Icono nombre={x.icono} tam={22} /></span>
                     <div>
-                      <p class="fila-titulo">{x.titulo}</p>
+                      <p class="fila-titulo">{enlaceDe(x) ? <a href={enlaceDe(x)} class="fila-enlace">{x.titulo}</a> : x.titulo}</p>
                       {x.texto && <p class="fila-texto">{x.texto}</p>}
+                      {enlaceDe(x) && <span class="fila-ver" aria-hidden="true">Ver más <Icono nombre="flecha" tam={16} /></span>}
                     </div>
                   </li>
                 ))}
@@ -54,8 +57,9 @@ const conGrupos = grupos.some((g) => g.nombre);
             <li class="fila">
               <span class="fila-icono"><Icono nombre={x.icono} tam={22} /></span>
               <div>
-                <p class="fila-titulo">{x.titulo}</p>
+                <p class="fila-titulo">{enlaceDe(x) ? <a href={enlaceDe(x)} class="fila-enlace">{x.titulo}</a> : x.titulo}</p>
                 {x.texto && <p class="fila-texto">{x.texto}</p>}
+                      {enlaceDe(x) && <span class="fila-ver" aria-hidden="true">Ver más <Icono nombre="flecha" tam={16} /></span>}
               </div>
             </li>
           ))}
@@ -73,10 +77,16 @@ const conGrupos = grupos.some((g) => g.nombre);
   .grupo-nombre { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; border-bottom: .45rem solid var(--verde); font-size: clamp(2rem, 3.6vw, 3rem); color: var(--verde); }
   .grupo-num { font-size: .95rem; letter-spacing: .08em; font-variant-numeric: tabular-nums; padding: .3rem .7rem; border-radius: 999px; background: var(--arena); color: var(--verde-hondo); }
   .filas { display: grid; }
-  .fila { display: flex; gap: 1rem; padding-block: 1.35rem; border-bottom: 1px solid var(--raya); }
+  .fila { position: relative; display: flex; gap: 1rem; padding-block: 1.35rem; border-bottom: 1px solid var(--raya); }
   .fila-icono { display: grid; place-items: center; flex: none; width: 2.9rem; height: 2.9rem; border-radius: 999px; background: var(--arena-clara); color: var(--verde); }
   .fila-titulo { font-family: var(--fuente-titulos); font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; line-height: 1.2; color: var(--c-texto); }
   .fila-texto { margin-top: .35rem; font-size: .98rem; opacity: .78; }
+  .fila-enlace { color: inherit; text-decoration: none; }
+  .fila-enlace::after { content: ""; position: absolute; inset: 0; }
+  .fila-enlace:focus-visible { outline: none; }
+  .fila:has(.fila-enlace:focus-visible) { outline: 3px solid var(--verde); outline-offset: 2px; }
+  .fila:has(.fila-enlace):hover .fila-titulo { text-decoration: underline; text-decoration-thickness: .2rem; text-underline-offset: .25rem; text-decoration-color: var(--arena); }
+  .fila-ver { display: inline-flex; align-items: center; gap: .3rem; margin-top: .5rem; font-weight: 800; font-size: .92rem; color: var(--verde); }
   .filas--rejilla { border-top: .45rem solid var(--verde); column-gap: 3rem; }
   @media (min-width: 768px) { .filas--rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (min-width: 1200px) { .filas--rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

@@ -29,3 +29,7 @@ Responsive de 375 px a pantallas anchas.
 npm ci
 npm run build    # dist/
 ```
+
+## Páginas propias
+- Cada elemento de `secciones.servicios.servicios` con `detalle` tiene su página en `/servicios/<slug>/` (`src/pages/[coleccion]/[slug].astro`).
+- Campos opcionales de los elementos con ficha: `detalle` (párrafos separados por una línea en blanco), `slug` e `imagenes` («/fotos/a.jpg; /fotos/b.jpg»).
