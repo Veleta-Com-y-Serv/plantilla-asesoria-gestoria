@@ -22,7 +22,7 @@ secciones:
   - { id: contacto, nombre: Contacto }
 estilo: sobrio
 plan_minimo: presencia
-version: 1.2.0
+version: 1.2.1
 base: astrowind
 demo_url: https://demo-plantilla-asesoria-gestoria.noexpertise.com
 activa: true
@@ -33,10 +33,10 @@ fichas:
   - { lista: servicios, campo: servicios, ruta: servicios, nombre: Servicio, tipo: Service }
 
 # Varias páginas (docs/plantillas.md § Varias páginas): reparto recomendado al activar «Varias páginas».
-# Inicio se queda con la portada y lo que no esté en ninguna página (aquí, el calendario fiscal y las opiniones).
+# Inicio se queda con la portada y lo que no esté en ninguna página (aquí, alta en tres pasos, calendario fiscal).
 paginas:
   - { ruta: servicios, titulo: Servicios, secciones: "servicios; planes" }
-  - { ruta: la-asesoria, titulo: La asesoría, secciones: "proceso; equipo" }
+  - { ruta: la-asesoria, titulo: La asesoría, secciones: "equipo; opiniones" }
   - { ruta: contacto, titulo: Contacto, secciones: "cita; preguntas; contacto" }
 
 # Asistente de puesta en marcha (NoExpertise): un paso por pantalla. Rutas del site sin índices;
