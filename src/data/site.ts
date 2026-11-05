@@ -88,6 +88,36 @@ function normalizar(s: Crudo = {}): Seccion {
 const secciones: Record<string, Seccion> = {};
 for (const [id, s] of Object.entries((d.secciones ?? {}) as Crudo)) secciones[id] = normalizar((s ?? {}) as Crudo);
 
+/**
+ * ¿La sección se pinta de verdad? Activa y con contenido, con la misma condición que su componente
+ * (src/components/secciones/<id>.astro). Una sección activa pero vacía no genera su `id`, y un enlace «/#id» no lleva a nada.
+ */
+function sePinta(id: string): boolean {
+  const s = secciones[id];
+  if (!s || !s.activa) return false;
+  const con = (l: unknown[], campo: string) => l.some((x) => x && texto((x as Crudo)[campo]).trim() !== '');
+  const intro = texto(s.texto).trim() !== '';
+  switch (id) {
+    case 'planes': return con(s.planes, 'nombre') || intro;
+    case 'plazos': return con(s.plazos, 'titulo') || intro;
+    case 'equipo': return s.personas.length > 0;
+    case 'servicios': return con(s.servicios, 'titulo') || texto(s.titulo).trim() !== '' || intro;
+    case 'preguntas': return s.preguntas.length > 0;
+    case 'proceso': return con(s.items, 'titulo') || s.galeria.some(Boolean);
+    case 'opiniones': return con(s.testimonios, 'texto');
+    case 'cita': return texto(s.titulo).trim() !== '' || intro || !!s.cta?.url;
+    default: return true;
+  }
+}
+
+/** Menú solo con lo que existe: fuera los enlaces de ancla («/#id», «/pagina/#id») a secciones inactivas o sin contenido. */
+function menuReal(): Enlace[] {
+  return lista<Enlace>(d.menu).filter((e) => {
+    const m = /^\/(?:[a-z0-9-]+\/)?#([A-Za-z0-9_-]+)$/.exec(texto(e?.url).trim());
+    return !m || sePinta(m[1]);
+  });
+}
+
 export const site: Site = {
   nombre: texto(d.nombre) || 'Mi negocio',
   eslogan: texto(d.eslogan),
@@ -96,7 +126,7 @@ export const site: Site = {
   colores: { primario: '#1f4d3a', acento: '#d8c3a0', fondo: '#ffffff', texto: '#14231c', ...(d.colores ?? {}) },
   contacto: { telefono: '', email: '', direccion: '', horario: '', whatsapp: '', ...(d.contacto ?? {}) },
   redes: { instagram: '', facebook: '', linkedin: '', ...(d.redes ?? {}) },
-  menu: lista<Enlace>(d.menu),
+  menu: menuReal(),
   seo: {
     titulo: texto(d.seo?.titulo) || texto(d.nombre),
     descripcion: texto(d.seo?.descripcion) || texto(d.eslogan),

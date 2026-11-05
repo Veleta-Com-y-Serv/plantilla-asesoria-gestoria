@@ -14,7 +14,9 @@ const datos = [
   c.telefono && { icono: 'telefono', etiqueta: 'Teléfono', valor: c.telefono, url: tel(c.telefono) },
   c.whatsapp && { icono: 'whatsapp', etiqueta: 'WhatsApp', valor: c.whatsapp, url: whatsapp(c.whatsapp) },
   c.email && { icono: 'correo', etiqueta: 'Correo', valor: c.email, url: `mailto:${c.email}` },
-  c.direccion && { icono: 'mapa', etiqueta: 'Oficina', valor: c.direccion, url: mapa(c.direccion) },
+  // El «·» de la dirección va con espacios duros a los dos lados: ni se pierde el de después con letter-spacing
+  // negativo ni se parte la línea justo antes o después del punto.
+  c.direccion && { icono: 'mapa', etiqueta: 'Oficina', valor: c.direccion.replace(/\s*·\s*/g, ' · '), url: mapa(c.direccion) },
   c.horario && { icono: 'reloj', etiqueta: 'Horario', valor: c.horario, url: '' },
 ].filter(Boolean) as { icono: string; etiqueta: string; valor: string; url: string }[];
 // Opciones del formulario: los `para` distintos de los servicios activos
@@ -72,7 +74,7 @@ const opciones = [
   @media (min-width: 1100px) { .contacto-datos { grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); } }
   .contacto-dato { padding-block: 1.25rem; border-bottom: 1px solid var(--raya-clara); }
   .contacto-dato dt { display: flex; align-items: center; gap: .5rem; font-size: .75rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--arena); }
-  .contacto-dato dd { margin-top: .4rem; font-family: var(--fuente-titulos); font-weight: 800; letter-spacing: -0.02em; font-size: 1.2rem; line-height: 1.3; color: #fff; overflow-wrap: anywhere; }
+  .contacto-dato dd { margin-top: .4rem; font-family: var(--fuente-titulos); font-weight: 800; letter-spacing: -0.02em; font-size: 1.2rem; line-height: 1.3; color: #fff; overflow-wrap: anywhere; word-spacing: .06em; }
   .contacto-dato a { text-decoration: none; }
   .contacto-dato a:hover { color: var(--arena); text-decoration: underline; }
   .contacto-fila { display: grid; background: var(--blanco); }

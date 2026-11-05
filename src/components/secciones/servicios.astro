@@ -20,7 +20,13 @@ for (const x of lista) {
   if (!g) grupos.push((g = { nombre, servicios: [] }));
   g.servicios.push(x);
 }
-const conGrupos = grupos.some((g) => g.nombre);
+// Columnas por destinatario solo si hay al menos uno con nombre y todas tienen 2 servicios o más; si no (una
+// columna con un solo elemento queda coja), lista plana con el destinatario como etiqueta de cada fila.
+const conGrupos = grupos.some((g) => g.nombre) && grupos.every((g) => g.servicios.length >= 2);
+const hayPara = lista.some((x) => String(x.para ?? '').trim());
+// Resto para equilibrar la rejilla plana: con n % 3 == 1 (3 columnas) o n impar (2 columnas), el último ocupa la fila entera.
+const resto3 = lista.length % 3;
+const resto2 = lista.length % 2;
 ---
 
 {
@@ -28,7 +34,7 @@ const conGrupos = grupos.some((g) => g.nombre);
     <Seccion id={Astro.props.id} class="banda--blanco">
       <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
       {lista.length > 0 && conGrupos && (
-        <div class="grupos" style={`--n:${Math.min(grupos.length, 4)}`}>
+        <div class="grupos" style={`--n:${Math.min(grupos.length, 3)}`}>
           {grupos.map((g) => (
             <div class="grupo">
               <h3 class="grupo-nombre">
@@ -52,11 +58,12 @@ const conGrupos = grupos.some((g) => g.nombre);
         </div>
       )}
       {lista.length > 0 && !conGrupos && (
-        <ul class="filas filas--rejilla">
+        <ul class="filas filas--rejilla" data-r3={resto3} data-r2={resto2}>
           {lista.map((x) => (
             <li class="fila">
               <span class="fila-icono"><Icono nombre={x.icono} tam={22} /></span>
               <div>
+                {hayPara && String(x.para ?? '').trim() && <p class="fila-para">{String(x.para).trim()}</p>}
                 <p class="fila-titulo">{enlaceDe(x) ? <a href={enlaceDe(x)} class="fila-enlace">{x.titulo}</a> : x.titulo}</p>
                 {x.texto && <p class="fila-texto">{x.texto}</p>}
                       {enlaceDe(x) && <span class="fila-ver" aria-hidden="true">Ver más <Icono nombre="flecha" tam={16} /></span>}
@@ -74,7 +81,12 @@ const conGrupos = grupos.some((g) => g.nombre);
   .grupos { display: grid; gap: 3.5rem; }
   @media (min-width: 900px) { .grupos { grid-template-columns: repeat(min(var(--n), 2), minmax(0, 1fr)); gap: 3rem; } }
   @media (min-width: 1200px) { .grupos { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 3.5rem; } }
-  .grupo-nombre { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; border-bottom: .45rem solid var(--verde); font-size: clamp(2rem, 3.6vw, 3rem); color: var(--verde); }
+  /* Nunca se parte una palabra del encabezado (el h3 global lleva overflow-wrap:anywhere): si no cabe, baja la
+     tipografía (cqi del propio grupo) y, como último recurso, parte solo con guion. */
+  .grupo { container-type: inline-size; min-width: 0; }
+  .grupo-nombre { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; border-bottom: .45rem solid var(--verde); font-size: clamp(1.5rem, 11cqi, 2.6rem); color: var(--verde); overflow-wrap: normal; word-break: normal; hyphens: manual; }
+  .grupo-nombre span:first-child { min-width: 0; overflow-wrap: normal; word-break: normal; hyphens: auto; }
+  .fila-para { margin-bottom: .3rem; font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--verde); }
   .grupo-num { font-size: .95rem; letter-spacing: .08em; font-variant-numeric: tabular-nums; padding: .3rem .7rem; border-radius: 999px; background: var(--arena); color: var(--verde-hondo); }
   .filas { display: grid; }
   .fila { position: relative; display: flex; gap: 1rem; padding-block: 1.35rem; border-bottom: 1px solid var(--raya); }
@@ -90,4 +102,7 @@ const conGrupos = grupos.some((g) => g.nombre);
   .filas--rejilla { border-top: .45rem solid var(--verde); column-gap: 3rem; }
   @media (min-width: 768px) { .filas--rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (min-width: 1200px) { .filas--rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  /* Sin huérfano: 2 columnas con n impar y 3 columnas con n % 3 == 1 → el último ocupa la fila entera. */
+  @media (min-width: 768px) and (max-width: 1199px) { .filas--rejilla[data-r2="1"] > .fila:last-child { grid-column: 1 / -1; } }
+  @media (min-width: 1200px) { .filas--rejilla[data-r3="1"] > .fila:last-child { grid-column: 1 / -1; } }
 </style>
